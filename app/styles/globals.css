@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* OKLCH Theme Colors */
+    --color-paper: oklch(0.953 0.012 85);       /* #F5F1EB - Base Background */
+    --color-paper-deep: oklch(0.918 0.014 82);  /* #E8E2D8 - Secondary Surfaces & Cards */
+    --color-ink: oklch(0.18 0.006 110);        /* #242320 - Active text & borders */
+    --color-ink-soft: oklch(0.32 0.008 110);   /* #4A4740 - Secondary text & labels */
+    --color-maroon: oklch(0.40 0.12 22);       /* #7A352A - Active tab indicator & logo 'u' */
+    --color-clay: oklch(0.55 0.07 35);         /* #9A7A5E - Tertiary labels & threads */
+    --color-moss: oklch(0.42 0.018 135);       /* #5E6B58 - Tech domain indicator */
+    --color-forest: oklch(0.36 0.018 145);     /* #4A5744 - Citation boxes */
+    --color-burgundy: oklch(0.38 0.08 25);     /* #5E3830 - History domain indicator */
+    --color-navy: oklch(0.32 0.05 250);        /* #2E3A4E - Science domain indicator */
+
+    /* Typography families */
+    --font-display: 'Instrument Serif', ui-serif, Georgia, serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Custom journal easing */
+    --ease-journal: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    /* Layered Archival Background Texture Stack */
+    background-image:
+      /* Lamplight top-left spotlight */
+      radial-gradient(circle at 20% 10%, oklch(0.99 0.01 85 / 0.55), transparent 55%),
+      /* Soft bottom-right shadowing */
+      radial-gradient(circle at 85% 80%, oklch(0.86 0.02 70 / 0.35), transparent 60%),
+      /* Micro-noise grain generator */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+      /* Fibrous paper texture layer */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fiber'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fiber)' opacity='0.04'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: auto, auto, 220px 220px, 600px 600px;
+  }
+}
+
+@layer components {
+  /* Fading Archival Divider */
+  .rule {
+    height: 1px;
+    background: linear-gradient(to right, transparent, oklch(0.18 0.006 110 / 0.18), transparent);
+  }
+
+  /* Archival Tab Navigation Chip */
+  .tab-nav-item {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid oklch(0.18 0.006 110 / 0.18);
+    background-color: oklch(0.953 0.012 85 / 0.40);
+    color: var(--color-ink-soft);
+    border-radius: 0.25rem;
+    transition: all 0.3s var(--ease-journal);
+  }
+
+  .tab-nav-item:hover {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .tab-nav-item.active {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    border-color: var(--color-ink);
+    box-shadow: 2px 2px 0 0 oklch(0.40 0.12 22 / 0.50);
+  }
+
+  /* Physical Sticky Notes on Canvas */
+  .sticky-note {
+    background-color: var(--color-paper-deep);
+    border: 1px solid oklch(0.18 0.006 110 / 0.15);
+    border-radius: 0.25rem;
+    transition: transform 0.35s var(--ease-journal), box-shadow 0.35s var(--ease-journal);
+    transform: rotate(var(--rot, 0deg));
+  }
+
+  .sticky-note:hover {
+    transform: rotate(calc(var(--rot, 0deg) * 0.3)) translateY(-8px) scale(1.04);
+    box-shadow: 0 22px 38px -18px rgba(26,28,24,0.5);
+    z-index: 20;
+  }
+
+  /* Scroll Reveal animation triggers */
+  .reveal {
+    opacity: 0;
+  }
+
+  .reveal.is-visible {
+    animation: riseIn 0.8s var(--ease-journal) forwards;
+  }
+
+  .reveal-delay-1 { animation-delay: 150ms; }
+  .reveal-delay-2 { animation-delay: 300ms; }
+  .reveal-delay-3 { animation-delay: 450ms; }
+}
+
+@layer utilities {
+  /* Hide scrollbars but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animations Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(28px) rotate(1deg); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0) rotate(0deg); filter: blur(0); }
+}
+
+@keyframes inkDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes nodePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+@keyframes factSwap {
+  0%, 100% { opacity: 0; transform: translateY(-4px); }
+  10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s var(--ease-journal) forwards;
+}
